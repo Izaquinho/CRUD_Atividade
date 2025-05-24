@@ -7,36 +7,37 @@ public class Veiculo {
     private String modelo;
     private String tipo;
     	
-    private Veiculo(int id, String placa, String modelo, String tipo) {
-		super();
-		this.id = id;
-		this.placa = placa;
-		this.modelo = modelo;
-		this.tipo = tipo;
-	}
+    public Veiculo() {}
+
+    public Veiculo(int id, String placa, String modelo, String tipo) {
+        this.id = id;
+        this.placa = placa;
+        this.modelo = modelo;
+        this.tipo = tipo;
+    }
     
-	private int getId() {
+	public int getId() {
 		return this.id;
 	}
-	private void setId(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
-	private String getPlaca() {
+	public String getPlaca() {
 		return this.placa;
 	}
-	private void setPlaca(String placa) {
+	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-	private String getModelo() {
+	public String getModelo() {
 		return this.modelo;
 	}
-	private void setModelo(String modelo) {
+	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
-	private String getTipo() {
+	public String getTipo() {
 		return this.tipo;
 	}
-	private void setTipo(String tipo) {
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 	

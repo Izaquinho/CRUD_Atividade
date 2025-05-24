@@ -2,7 +2,6 @@ package av2_isaak;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class TelaPrincipal extends JFrame {
 
@@ -12,7 +11,6 @@ public class TelaPrincipal extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Painel lateral com botões
         JPanel painelLateral = new JPanel();
         painelLateral.setLayout(new GridLayout(3, 1, 10, 10));
         painelLateral.setPreferredSize(new Dimension(200, 0));
@@ -26,16 +24,13 @@ public class TelaPrincipal extends JFrame {
         painelLateral.add(btnVeiculos);
         painelLateral.add(btnEntregas);
 
-        // Painel principal
         JPanel painelConteudo = new JPanel();
         painelConteudo.setLayout(new BorderLayout());
 
-        // Layout principal da janela
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(painelLateral, BorderLayout.WEST);
         getContentPane().add(painelConteudo, BorderLayout.CENTER);
 
-        // Ações dos botões
         btnEntregadores.addActionListener(e -> {
             painelConteudo.removeAll();
             painelConteudo.add(new EntregadorTela());
@@ -45,14 +40,14 @@ public class TelaPrincipal extends JFrame {
 
         btnVeiculos.addActionListener(e -> {
             painelConteudo.removeAll();
-            painelConteudo.add(new EntregadorTela());
+            painelConteudo.add(new VeiculoTela());
             painelConteudo.revalidate();
             painelConteudo.repaint();
         });
 
         btnEntregas.addActionListener(e -> {
             painelConteudo.removeAll();
-            painelConteudo.add(new EntregadorTela());
+            painelConteudo.add(new EntregaTela());
             painelConteudo.revalidate();
             painelConteudo.repaint();
         });

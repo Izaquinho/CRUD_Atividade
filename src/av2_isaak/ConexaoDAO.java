@@ -5,9 +5,9 @@ import java.sql.*;
 public class ConexaoDAO {
 	
 	public Connection connection = null;
-	private final String DRIVER = "com.mysql.jdbc.Driver";
+	private final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private final String DBNAME = "mydb";
-	private final String URL = "jdbc:mysql://localhost:3306/" + DBNAME;
+	private final String URL = "jdbc:mysql://localhost:3306/" + DBNAME + "?useSSL=false&serverTimezone=UTC";
 	private final String LOGIN = "root";
 	private final String SENHA = "root";
 

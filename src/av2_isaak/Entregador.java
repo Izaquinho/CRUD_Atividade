@@ -7,13 +7,14 @@ public class Entregador {
     private String cpf;
     private String telefone;
     
+    public Entregador() {}
+
     public Entregador(int id, String nome, String cpf, String telefone) {
-		this.id = id;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.telefone = telefone;
-	}
-    
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+    }
     public int getId() {
 		return this.id;
 	}
