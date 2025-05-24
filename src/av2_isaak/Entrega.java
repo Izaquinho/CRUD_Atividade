@@ -8,8 +8,18 @@ public class Entrega {
     private Status status;
     private Entregador entregador;
     private Veiculo veiculo;
-	
-    private int getId() {
+	    
+    private Entrega(int id, String data, String destino, Status status, Entregador entregador, Veiculo veiculo) {
+		super();
+		this.id = id;
+		this.data = data;
+		this.destino = destino;
+		this.status = status;
+		this.entregador = entregador;
+		this.veiculo = veiculo;
+	}
+    
+	private int getId() {
 		return this.id;
 	}
 	private void setId(int id) {

@@ -6,8 +6,16 @@ public class Veiculo {
     private String placa;
     private String modelo;
     private String tipo;
-	
-    private int getId() {
+    	
+    private Veiculo(int id, String placa, String modelo, String tipo) {
+		super();
+		this.id = id;
+		this.placa = placa;
+		this.modelo = modelo;
+		this.tipo = tipo;
+	}
+    
+	private int getId() {
 		return this.id;
 	}
 	private void setId(int id) {

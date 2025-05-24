@@ -6,50 +6,42 @@ public class Entregador {
     private String nome;
     private String cpf;
     private String telefone;
-    private String email;
-    private Endereco endereco;
-	
-    private int getId() {
-		return this.id;
-	}
-	private void setId(int id) {
+    
+    public Entregador(int id, String nome, String cpf, String telefone) {
 		this.id = id;
-	}
-	private String getNome() {
-		return this.nome;
-	}
-	private void setNome(String nome) {
 		this.nome = nome;
-	}
-	private String getCpf() {
-		return this.cpf;
-	}
-	private void setCpf(String cpf) {
 		this.cpf = cpf;
-	}
-	private String getTelefone() {
-		return this.telefone;
-	}
-	private void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	private String getEmail() {
-		return this.email;
+    
+    public int getId() {
+		return this.id;
 	}
-	private void setEmail(String email) {
-		this.email = email;
+	public void setId(int id) {
+		this.id = id;
 	}
-	private Endereco getEndereco() {
-		return this.endereco;
+	public String getNome() {
+		return this.nome;
 	}
-	private void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	public String getCpf() {
+		return this.cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	public String getTelefone() {
+		return this.telefone;
+	}
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 	
 	public String toString() {
 		return "Entregador [getId()=" + getId() + ", getNome()=" + getNome() + ", getCpf()=" + getCpf()
-				+ ", getTelefone()=" + getTelefone() + ", getEmail()=" + getEmail() + ", getEndereco()=" + getEndereco()
-				+ "]";
+				+ ", getTelefone()=" + getTelefone() ;
 	}
 	
 }
