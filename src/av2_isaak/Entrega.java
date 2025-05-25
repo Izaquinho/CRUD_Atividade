@@ -8,41 +8,52 @@ public class Entrega {
     private Status status;
     private Entregador entregador;
     private Veiculo veiculo;
-	
-    private int getId() {
+	    
+    public Entrega() {}
+
+    public Entrega(int id, String data, String destino, Status status, Entregador entregador, Veiculo veiculo) {
+        this.id = id;
+        this.data = data;
+        this.destino = destino;
+        this.status = status;
+        this.entregador = entregador;
+        this.veiculo = veiculo;
+    }
+    
+	public int getId() {
 		return this.id;
 	}
-	private void setId(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
-	private String getData() {
+	public String getData() {
 		return this.data;
 	}
-	private void setData(String data) {
+	public void setData(String data) {
 		this.data = data;
 	}
-	private String getDestino() {
+	public String getDestino() {
 		return this.destino;
 	}
-	private void setDestino(String destino) {
+	public void setDestino(String destino) {
 		this.destino = destino;
 	}
-	private Status getStatus() {
+	public Status getStatus() {
 		return this.status;
 	}
-	private void setStatus(Status status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
-	private Entregador getEntregador() {
+	public Entregador getEntregador() {
 		return this.entregador;
 	}
-	private void setEntregador(Entregador entregador) {
+	public void setEntregador(Entregador entregador) {
 		this.entregador = entregador;
 	}
-	private Veiculo getVeiculo() {
+	public Veiculo getVeiculo() {
 		return this.veiculo;
 	}
-	private void setVeiculo(Veiculo veiculo) {
+	public void setVeiculo(Veiculo veiculo) {
 		this.veiculo = veiculo;
 	}
 	
