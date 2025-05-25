@@ -41,10 +41,9 @@ public class Veiculo {
 		this.tipo = tipo;
 	}
 	
-	public String toString() {
-		return "Veiculo [getId()=" + getId() + ", getPlaca()=" + getPlaca() + ", getModelo()=" + getModelo()
-				+ ", getTipo()=" + getTipo() + "]";
-	}
+    public String toString() {
+        return modelo + " - " + placa + " (ID: " + id + ")";
+    }
     
 	public boolean equals(Object o) {
 	    if (this == o) return true;

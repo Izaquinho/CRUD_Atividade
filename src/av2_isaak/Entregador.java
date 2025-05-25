@@ -40,10 +40,9 @@ public class Entregador {
 		this.telefone = telefone;
 	}
 	
-	public String toString() {
-		return "Entregador [getId()=" + getId() + ", getNome()=" + getNome() + ", getCpf()=" + getCpf()
-				+ ", getTelefone()=" + getTelefone() ;
-	}
+    public String toString() {
+        return nome + " (ID: " + id + ")";
+    }
 	
 	public boolean equals(Object o) {
 	    if (this == o) return true;
