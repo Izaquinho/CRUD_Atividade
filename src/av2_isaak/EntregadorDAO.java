@@ -6,87 +6,88 @@ import java.util.List;
 
 public class EntregadorDAO {
 
-    ConexaoDAO conexaoDAO = new ConexaoDAO();
-
-    public boolean salvar(Entregador entregador) {
-        if (conexaoDAO.getConnection()) {
-            String sql = "INSERT INTO entregador (nome, cpf, telefone) VALUES (?, ?, ?)";
-            try {
-                PreparedStatement stmt = conexaoDAO.connection.prepareStatement(sql);
-                stmt.setString(1, entregador.getNome());
-                stmt.setString(2, entregador.getCpf());
-                stmt.setString(3, entregador.getTelefone());
-                stmt.executeUpdate();
-                return true;
-            } catch (SQLException e) {
-                System.out.println("Erro ao salvar entregador: " + e.getMessage());
-            } finally {
-                conexaoDAO.close();
-            }
+    public boolean salvar(Entregador e) {
+        String sql = "INSERT INTO entregador (nome, cpf, telefone) VALUES (?, ?, ?)";
+        try (Connection conn = ConexaoDAO.getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, e.getNome());
+            stmt.setString(2, e.getCpf());
+            stmt.setString(3, e.getTelefone());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.err.println("Erro ao salvar entregador: " + ex.getMessage());
+            return false;
         }
-        return false;
     }
 
-    public boolean atualizar(Entregador entregador) {
-        if (conexaoDAO.getConnection()) {
-            String sql = "UPDATE entregador SET nome = ?, cpf = ?, telefone = ? WHERE id = ?";
-            try {
-                PreparedStatement stmt = conexaoDAO.connection.prepareStatement(sql);
-                stmt.setString(1, entregador.getNome());
-                stmt.setString(2, entregador.getCpf());
-                stmt.setString(3, entregador.getTelefone());
-                stmt.setInt(4, entregador.getId());
-                stmt.executeUpdate();
-                return true;
-            } catch (SQLException e) {
-                System.out.println("Erro ao atualizar entregador: " + e.getMessage());
-            } finally {
-                conexaoDAO.close();
-            }
+    public boolean atualizar(Entregador e) {
+        String sql = "UPDATE entregador SET nome = ?, cpf = ?, telefone = ? WHERE id = ?";
+        try (Connection conn = ConexaoDAO.getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, e.getNome());
+            stmt.setString(2, e.getCpf());
+            stmt.setString(3, e.getTelefone());
+            stmt.setInt(4, e.getId());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.err.println("Erro ao atualizar entregador: " + ex.getMessage());
+            return false;
         }
-        return false;
     }
 
     public boolean excluir(int id) {
-        if (conexaoDAO.getConnection()) {
-            String sql = "DELETE FROM entregador WHERE id = ?";
-            try {
-                PreparedStatement stmt = conexaoDAO.connection.prepareStatement(sql);
-                stmt.setInt(1, id);
-                stmt.executeUpdate();
-                return true;
-            } catch (SQLException e) {
-                System.out.println("Erro ao excluir entregador: " + e.getMessage());
-            } finally {
-                conexaoDAO.close();
-            }
+        String sql = "DELETE FROM entregador WHERE id = ?";
+        try (Connection conn = ConexaoDAO.getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.err.println("Erro ao excluir entregador: " + ex.getMessage());
+            return false;
         }
-        return false;
     }
 
     public List<Entregador> listar() {
         List<Entregador> lista = new ArrayList<>();
-        if (conexaoDAO.getConnection()) {
-            String sql = "SELECT * FROM entregador";
-            try {
-                Statement stmt = conexaoDAO.connection.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    Entregador e = new Entregador(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("cpf"),
-                        rs.getString("telefone")
-                    );
-                    lista.add(e);
-                }
-            } catch (SQLException e) {
-                System.out.println("Erro ao listar entregadores: " + e.getMessage());
-            } finally {
-                conexaoDAO.close();
+        String sql = "SELECT * FROM entregador";
+        try (Connection conn = ConexaoDAO.getConexao();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                lista.add(new Entregador(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("cpf"),
+                    rs.getString("telefone")
+                ));
             }
+        } catch (SQLException ex) {
+            System.err.println("Erro ao listar entregadores: " + ex.getMessage());
         }
         return lista;
     }
-
+    
+    public Entregador buscarPorId(int id) {
+        String sql = "SELECT * FROM entregador WHERE id = ?";
+        try (Connection conn = ConexaoDAO.getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Entregador(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("cpf"),
+                    rs.getString("telefone")
+                );
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erro ao buscar entregador: " + ex.getMessage());
+        }
+        return null;
+    }    
 }
+

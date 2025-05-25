@@ -1,36 +1,25 @@
 package av2_isaak;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ConexaoDAO {
-	
-	public Connection connection = null;
-	private final String DRIVER = "com.mysql.cj.jdbc.Driver";
-	private final String DBNAME = "mydb";
-	private final String URL = "jdbc:mysql://localhost:3306/" + DBNAME + "?useSSL=false&serverTimezone=UTC";
-	private final String LOGIN = "root";
-	private final String SENHA = "root";
 
-	public boolean getConnection () {
-		try {
-			Class.forName (DRIVER);
-			connection = DriverManager.getConnection (URL, LOGIN, SENHA) ;
-			System. out.println ("Conectou");
-			return true;
-		} catch (ClassNotFoundException erro) {
-			System. out.println ("Driver nao encontrado " + erro.toString ());
-			return false;
-		} catch (SQLException erro) {
-			System. out.println ("Falha ao conectar " + erro.toString ());
-			return false;
-		}
-	}
+    private static final String URL = "jdbc:mysql://localhost:3306/mydb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC";
+    private static final String USUARIO = "root";
+    private static final String SENHA = "root";
 
-	public void close () {
-		try {
-			connection.close();
-			System.out.println ("Desconectou");
-		} catch (SQLException erro) {			
-		}
-	}
-}	
+    public static Connection getConexao() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(URL, USUARIO, SENHA);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Driver JDBC não encontrado: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Erro ao conectar ao banco de dados: " + e.getMessage());
+        }
+        return null;
+    }
+}
+
