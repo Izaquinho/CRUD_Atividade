@@ -10,7 +10,7 @@ public class EntregaDAO {
         String sql = "INSERT INTO entrega (data, destino, status, entregador_id, veiculo_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ConexaoDAO.getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setDate(1, Date.valueOf(e.getData()));
+            stmt.setDate(1, Date.valueOf(e.getData())); // Assumindo formato yyyy-MM-dd
             stmt.setString(2, e.getDestino());
             stmt.setString(3, e.getStatus().name());
             stmt.setInt(4, e.getEntregador().getId());
@@ -61,12 +61,8 @@ public class EntregaDAO {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                Entregador entregador = new Entregador();
-                entregador.setId(rs.getInt("entregador_id"));
-
-                Veiculo veiculo = new Veiculo();
-                veiculo.setId(rs.getInt("veiculo_id"));
-
+                Entregador entregador = new EntregadorDAO().buscarPorId(rs.getInt("entregador_id"));
+                Veiculo veiculo = new VeiculoDAO().buscarPorId(rs.getInt("veiculo_id"));
                 Status status = Status.valueOf(rs.getString("status"));
 
                 lista.add(new Entrega(
@@ -82,5 +78,31 @@ public class EntregaDAO {
             System.err.println("Erro ao listar entregas: " + ex.getMessage());
         }
         return lista;
+    }
+
+    public Entrega buscarPorId(int id) {
+        String sql = "SELECT * FROM entrega WHERE id = ?";
+        try (Connection conn = ConexaoDAO.getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Entregador entregador = new EntregadorDAO().buscarPorId(rs.getInt("entregador_id"));
+                Veiculo veiculo = new VeiculoDAO().buscarPorId(rs.getInt("veiculo_id"));
+                return new Entrega(
+                    rs.getInt("id"),
+                    rs.getString("data"),
+                    rs.getString("destino"),
+                    Status.valueOf(rs.getString("status")),
+                    entregador,
+                    veiculo
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar entrega por ID: " + e.getMessage());
+        }
+        return null;
     }
 }

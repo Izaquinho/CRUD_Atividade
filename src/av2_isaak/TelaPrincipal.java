@@ -2,6 +2,7 @@ package av2_isaak;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Date;
 import java.util.List;
 
 public class TelaPrincipal extends JFrame {
@@ -10,7 +11,8 @@ public class TelaPrincipal extends JFrame {
     private JComboBox<Entregador> cbEntregador;
     private JComboBox<Veiculo> cbVeiculo;
     private Integer idEntregadorEditando = null;
-    private Integer idVeiculoEditando = null;
+    private int idVeiculoEditando = -1;
+    private int idEntregaEdicao = -1;
 
     public TelaPrincipal() {
         setTitle("Sistema de Logística");
@@ -173,7 +175,7 @@ public class TelaPrincipal extends JFrame {
                 Veiculo v = new Veiculo(idVeiculoEditando, txtPlaca.getText(), txtModelo.getText(), txtTipo.getText());
                 dao.atualizar(v);
                 JOptionPane.showMessageDialog(this, "Veículo atualizado!");
-                idVeiculoEditando = -1; // Reseta o modo de edição
+                idVeiculoEditando = -1;
             }
             limparCampos(txtPlaca, txtModelo, txtTipo);
         });
@@ -263,7 +265,6 @@ public class TelaPrincipal extends JFrame {
 
         panelEntrega.add(splitEntrega, BorderLayout.CENTER);
 
-        // Preenche os JComboBox com dados sempre que a aba for selecionada
         tabbedPane.addChangeListener(e -> {
             if (tabbedPane.getSelectedComponent() == panelEntrega) {
                 atualizarComboEntregadores();
@@ -274,32 +275,72 @@ public class TelaPrincipal extends JFrame {
         btSalvarEntregas.addActionListener(e -> {
             Entregador ent = (Entregador) cbEntregador.getSelectedItem();
             Veiculo vei = (Veiculo) cbVeiculo.getSelectedItem();
+            
             if (ent == null || vei == null) {
                 JOptionPane.showMessageDialog(this, "Selecione entregador e veículo.");
                 return;
             }
-            Entrega entrega = new Entrega(0, txtData.getText(), txtDestino.getText(), (Status) cbStatus.getSelectedItem(), ent, vei);
-            new EntregaDAO().salvar(entrega);
-            JOptionPane.showMessageDialog(this, "Entrega salva!");
+
+            String data = txtData.getText();
+            try {
+                Date.valueOf(data); 
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, "Data inválida! Use o formato yyyy-MM-dd.");
+                return;
+            }
+
+            Entrega entrega = new Entrega(
+                idEntregaEdicao == -1 ? 0 : idEntregaEdicao,
+                data,
+                txtDestino.getText(),
+                (Status) cbStatus.getSelectedItem(),
+                ent,
+                vei
+            );
+
+            EntregaDAO dao = new EntregaDAO();
+
+            if (idEntregaEdicao == -1) {
+                if (dao.salvar(entrega)) {
+                    JOptionPane.showMessageDialog(this, "Entrega salva!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Erro ao salvar entrega.");
+                }
+            } else {
+                if (dao.atualizar(entrega)) {
+                    JOptionPane.showMessageDialog(this, "Entrega atualizada!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Erro ao atualizar entrega.");
+                }
+                idEntregaEdicao = -1; 
+            }
+
             limparCampos(txtData, txtDestino);
         });
+
 
         btEditarEntregas.addActionListener(e -> {
             String idStr = JOptionPane.showInputDialog("ID da entrega para editar:");
             if (idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Entregador ent = (Entregador) cbEntregador.getSelectedItem();
-                Veiculo vei = (Veiculo) cbVeiculo.getSelectedItem();
-                if (ent == null || vei == null) {
-                    JOptionPane.showMessageDialog(this, "Selecione entregador e veículo.");
-                    return;
+                try {
+                    int id = Integer.parseInt(idStr);
+                    Entrega entrega = new EntregaDAO().buscarPorId(id);
+                    if (entrega != null) {
+                        txtData.setText(entrega.getData());
+                        txtDestino.setText(entrega.getDestino());
+                        cbStatus.setSelectedItem(entrega.getStatus());
+                        cbEntregador.setSelectedItem(entrega.getEntregador());
+                        cbVeiculo.setSelectedItem(entrega.getVeiculo());
+                        idEntregaEdicao = entrega.getId();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Entrega não encontrada!");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "ID inválido!");
                 }
-                Entrega entrega = new Entrega(id, txtData.getText(), txtDestino.getText(), (Status) cbStatus.getSelectedItem(), ent, vei);
-                new EntregaDAO().atualizar(entrega);
-                JOptionPane.showMessageDialog(this, "Entrega atualizada!");
-                limparCampos(txtData, txtDestino);
             }
         });
+
 
         btExcluirEntregas.addActionListener(e -> {
             String idStr = JOptionPane.showInputDialog("ID da entrega para excluir:");
