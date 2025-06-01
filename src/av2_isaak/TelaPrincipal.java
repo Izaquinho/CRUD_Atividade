@@ -4,42 +4,59 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TelaPrincipal extends JFrame {
-	private AbaEntregadorPanel abaEntregador;
-	private AbaVeiculoPanel abaVeiculo;
-	private AbaProdutoPanel abaProduto;
-	private AbaEntregaPanel abaEntrega;
+    private AbaEntregadorPanel abaEntregador;
+    private AbaVeiculoPanel abaVeiculo;
+    private AbaProdutoPanel abaProduto;
+    private AbaEntregaPanel abaEntrega;
 
-	public TelaPrincipal() {
-		setTitle("Sistema de Logística");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(800, 600);
-		setLocationRelativeTo(null);
+    public TelaPrincipal() {
+        setTitle("Sistema de Logística");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
 
-		JTabbedPane abas = new JTabbedPane();
+        JTabbedPane abas = new JTabbedPane();
 
-		abaEntregador = new AbaEntregadorPanel();
-		abaVeiculo = new AbaVeiculoPanel();
-		abaProduto = new AbaProdutoPanel();
-		abaEntrega = new AbaEntregaPanel();
+        abaEntregador = new AbaEntregadorPanel();
+        abaVeiculo = new AbaVeiculoPanel();
+        abaProduto = new AbaProdutoPanel();
+        abaEntrega = new AbaEntregaPanel();
 
-		abas.addTab("Veículos", abaVeiculo);
-		abas.addTab("Produtos", abaProduto);
+        abas.addTab("Entregadores", abaEntregador);
+        abas.addTab("Veículos", abaVeiculo);
+        abas.addTab("Produtos", abaProduto);
+        abas.addTab("Entregas", abaEntrega);
 
-		add(abas, BorderLayout.CENTER);
+        abas.addChangeListener(e -> {
+            Component abaSelecionada = abas.getSelectedComponent();
 
-		carregarDadosIniciais();
-	}
+            if (abaSelecionada instanceof AbaEntregaPanel) {
+                abaEntrega.setListaEntregadores(new EntregadorDAO().listar());
+                abaEntrega.setListaVeiculos(new VeiculoDAO().listar());
+                abaEntrega.setListaProdutos(new ProdutoDAO().listar());
+                abaEntrega.atualizarTabela(new EntregaDAO().listar());
+            }
+        });
 
-	private void carregarDadosIniciais() {
+        add(abas, BorderLayout.CENTER);
 
-		abaVeiculo.atualizarTabela(VeiculoDAO.listar());
-		abaProduto.atualizarTabela(ProdutoDAO.listar());
+        carregarDadosIniciais();
+    }
 
-	}
+    private void carregarDadosIniciais() {
+        abaEntregador.atualizarTabela(EntregadorDAO.listar());
+        abaVeiculo.atualizarTabela(VeiculoDAO.listar());
+        abaProduto.atualizarTabela(ProdutoDAO.listar());
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			new TelaPrincipal().setVisible(true);
-		});
-	}
+        abaEntrega.setListaEntregadores(new EntregadorDAO().listar());
+        abaEntrega.setListaVeiculos(new VeiculoDAO().listar());
+        abaEntrega.setListaProdutos(new ProdutoDAO().listar());
+        abaEntrega.atualizarTabela(new EntregaDAO().listar());
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new TelaPrincipal().setVisible(true);
+        });
+    }
 }
