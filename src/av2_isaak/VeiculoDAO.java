@@ -50,7 +50,7 @@ public class VeiculoDAO {
         }
     }
 
-    public List<Veiculo> listar() {
+    public static List<Veiculo> listar() {
         List<Veiculo> lista = new ArrayList<>();
         String sql = "SELECT * FROM veiculo";
         try (Connection conn = ConexaoDAO.getConexao();

@@ -51,7 +51,7 @@ public class ProdutoDAO {
 		}
 	}
 
-	public List<Produto> listar() {
+	public static List<Produto> listar() {
 		List<Produto> lista = new ArrayList<>();
 		String sql = "SELECT * FROM produto";
 		try (Connection conn = ConexaoDAO.getConexao();
