@@ -50,7 +50,7 @@ public class EntregadorDAO {
         }
     }
 
-    public List<Entregador> listar() {
+    public static List<Entregador> listar() {
         List<Entregador> lista = new ArrayList<>();
         String sql = "SELECT * FROM entregador";
         try (Connection conn = ConexaoDAO.getConexao();

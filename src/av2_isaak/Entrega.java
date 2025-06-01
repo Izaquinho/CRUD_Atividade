@@ -8,16 +8,18 @@ public class Entrega {
     private Status status;
     private Entregador entregador;
     private Veiculo veiculo;
+    private Produto produto;
 	    
     public Entrega() {}
 
-    public Entrega(int id, String data, String destino, Status status, Entregador entregador, Veiculo veiculo) {
+    public Entrega(int id, String data, String destino, Status status, Entregador entregador, Veiculo veiculo, Produto produto) {
         this.id = id;
         this.data = data;
         this.destino = destino;
         this.status = status;
         this.entregador = entregador;
         this.veiculo = veiculo;
+        this.produto = produto;
     }
     
 	public int getId() {
@@ -57,10 +59,11 @@ public class Entrega {
 		this.veiculo = veiculo;
 	}
 	
-	public String toString() {
-		return "Entrega [getId()=" + getId() + ", getData()=" + getData() + ", getDestino()=" + getDestino()
-				+ ", getStatus()=" + getStatus() + ", getEntregador()=" + getEntregador() + ", getVeiculo()="
-				+ getVeiculo() + "]";
-	}    
-
+	public Produto getProduto() {
+		return this.produto;
+	}
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
+	
 }
