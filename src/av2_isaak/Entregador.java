@@ -40,15 +40,7 @@ public class Entregador {
 		this.telefone = telefone;
 	}
 	
-    public String toString() {
-        return nome + " (ID: " + id + ")";
-    }
-	
-	public boolean equals(Object o) {
-	    if (this == o) return true;
-	    if (o == null || getClass() != o.getClass()) return false;
-	    Entregador that = (Entregador) o;
-	    return id == that.id;
+	public String toString() {
+	        return nome + " (ID: " + id + ")";
 	}
-	
 }
